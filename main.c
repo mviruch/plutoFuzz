@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	else if(pid >= 1)
 	{
 		//parent
-		printf("here is parent\n");
+		// TODO
 	}
 	else
 	{
