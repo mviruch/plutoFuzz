@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "debugger.c"
+
 int main(int argc, char* argv[])
 {
 	if(argc < 2)
@@ -19,13 +21,16 @@ int main(int argc, char* argv[])
 			printf("Error in ptrace\n");
 			return -1;
 		}
-		printf("Now execl\n");
 		execl(argv[1], argv[1], NULL);
 	}
 	else if(pid >= 1)
 	{
-		//parent
 		// TODO
+		debug dbg;
+		dbg.prog = argv[1];
+		dbg.pid = pid;
+		printf("dbg.prog=%s, dbg.pid=%d\n", dbg.prog, dbg.pid);
+		run(dbg);
 	}
 	else
 	{
