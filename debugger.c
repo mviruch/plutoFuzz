@@ -4,6 +4,11 @@
 #include "linenoise/linenoise.h"
 #include "linenoise/linenoise.c"
 #include <string.h>
+#include "breakPoint.c"
+#include <stdlib.h>
+
+int bpId = 0;
+breakPoint bPool[64];
 
 int split(char dst[][64], char* line, const char* spl)
 {
@@ -34,12 +39,28 @@ void handleCommand(char* line, debug dbg)
 	{
 		contDebug(dbg);
 	}
+	else if(strcmp(dst[0], "bp") == 0)
+	{
+		char *endPtr;
+		breakPoint bp;
+		bp.pid = dbg.pid;
+		bp.addr = strtoul(dst[1], &endPtr, 16);
+		//tmp = atol(dst[1]);
+		//bp.addr = tmp;
+		bp.id = bpId;
+		bPool[bpId] = bp;
+		printf("0x%08x\n%s\n", bp.addr, dst[1]);
+		//bPool = (int *)realloc((void *)bPool, (bpId+1)*sizeof(breakPoint));
+		enable(bPool[bpId]);
+		bpId++;
+	}
 }
 
 void run(debug dbg)
 {
 	int waitStatus;
 	int options = 0;
+	//bPool = (int *)malloc((bpId+1)*sizeof(breakPoint));
 	char* line = NULL;
 	waitpid(dbg.pid, &waitStatus, options);
 	while((line = linenoise("dbg> ")) != NULL)
