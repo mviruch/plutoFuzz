@@ -45,12 +45,9 @@ void handleCommand(char* line, debug dbg)
 		breakPoint bp;
 		bp.pid = dbg.pid;
 		bp.addr = strtoul(dst[1], &endPtr, 16);
-		//tmp = atol(dst[1]);
-		//bp.addr = tmp;
 		bp.id = bpId;
 		bPool[bpId] = bp;
 		printf("0x%08x\n%s\n", bp.addr, dst[1]);
-		//bPool = (int *)realloc((void *)bPool, (bpId+1)*sizeof(breakPoint));
 		enable(bPool[bpId]);
 		bpId++;
 	}
@@ -60,7 +57,6 @@ void run(debug dbg)
 {
 	int waitStatus;
 	int options = 0;
-	//bPool = (int *)malloc((bpId+1)*sizeof(breakPoint));
 	char* line = NULL;
 	waitpid(dbg.pid, &waitStatus, options);
 	while((line = linenoise("dbg> ")) != NULL)
