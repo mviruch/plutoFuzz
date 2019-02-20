@@ -7,6 +7,6 @@ typedef struct
 	pid_t pid;
 	intptr_t addr;
 	bool enable;
-	uint8_t saveData;
+	long saveData;
 	int id;
 } breakPoint;

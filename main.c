@@ -1,9 +1,10 @@
-#include <sys/ptrace.h>
-#include <sys/types.h>
 #include <stdio.h>
 #include <unistd.h>
 
-#include "debugger.c"
+#include <sys/ptrace.h>
+#include <sys/types.h>
+
+#include "debugger/debugger.c"
 
 int main(int argc, char* argv[])
 {
@@ -18,14 +19,13 @@ int main(int argc, char* argv[])
 		//child
 		if(ptrace(PTRACE_TRACEME, 0, 0, 0) < 0)
 		{
-			printf("Error in ptrace\n");
+			printf("Error in child\n");
 			return -1;
 		}
 		execl(argv[1], argv[1], NULL);
 	}
 	else if(pid >= 1)
 	{
-		// TODO
 		debug dbg;
 		dbg.prog = argv[1];
 		dbg.pid = pid;
