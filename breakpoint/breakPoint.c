@@ -15,11 +15,12 @@ void enable(breakPoint *bp)
 	long int3 = (data & 0xFFFFFFFFFFFFFF00)|0xcc;
 	struct user_regs_struct regs;
 	ptrace(PTRACE_GETREGS, bp->pid, 0, &regs);
-	ptrace(PTRACE_POKETEXT, bp->pid, bp->addr, int3); //TODO
+	ptrace(PTRACE_POKETEXT, bp->pid, bp->addr, int3);
 
 	bp->enable = true;
 	data = ptrace(PTRACE_PEEKTEXT, bp->pid, bp->addr, 0);
-	msg(bp->pid, "data at enable 0x%08x: 0x%8lx", regs.rip, 
+	
+	msg(bp->pid, "breakPoint at 0x%08x: 0x%8lx enable.", bp->addr, 
 	ptrace(PTRACE_PEEKTEXT, bp->pid, bp->addr, 0));
 }
 
@@ -31,7 +32,7 @@ void disable(breakPoint *bp)
 	data = ptrace(PTRACE_PEEKTEXT, bp->pid, bp->addr, NULL);
 	struct user_regs_struct regs;
 	ptrace(PTRACE_GETREGS, bp->pid, 0, &regs);
-	//msg(bp->pid, "data at disable 0x%08x: 0x%llx", bp->addr, data);
+	msg(bp->pid, "breakPoint at 0x%08x: 0x%llx disable.", bp->addr, data);
 	bp->enable = false;
 }
 
@@ -52,18 +53,19 @@ void resume(breakPoint *bp)
 
 	//step
 	ptrace(PTRACE_SINGLESTEP, bp->pid, 0, 0);
-	//wait(0);
+	wait(0);
 
 	//enable
 	enable(bp);
+	//printf("bbbbb");
 }
 
-bool isEnanle(breakPoint *bp)
+bool isEnable(breakPoint *bp)
 {
 	return bp->enable;
 }
 
-uint8_t getAddr(breakPoint *bp)
+intptr_t getAddr(breakPoint *bp)
 {
 	return bp->addr;
 }

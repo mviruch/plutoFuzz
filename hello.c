@@ -1,8 +1,15 @@
 #include <stdio.h>
 
+int pr()
+{
+	printf("hello world!\n");
+	return 0;
+}
+
 int main()
 {
-	printf("Hello ");
-	printf("world!\n");
+	pr();
+	pr();
+	printf("final\n");
 	return 0;
 }
