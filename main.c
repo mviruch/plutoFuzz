@@ -4,7 +4,7 @@
 #include <sys/ptrace.h>
 #include <sys/types.h>
 
-#include "debugger/debugger.c"
+#include "debugger.h"
 
 int main(int argc, char* argv[])
 {
